@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walentynkowe pytanie 💝</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+
+        .hearts {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: white;
+            font-size: 3rem;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+            margin-bottom: 3rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2rem;
+            position: relative;
+            height: 150px;
+            align-items: center;
+        }
+
+        button {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #yesBtn {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: white;
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        #noBtn {
+            background: linear-gradient(135deg, #a8a8a8, #7a7a7a);
+            color: white;
+            position: absolute;
+            transition: all 0.1s ease;
+        }
+
+        .success-screen {
+            display: none;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .success-message {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin: 2rem 0;
+        }
+
+        .image-container {
+            margin: 2rem 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            font-size: 2rem;
+            animation: floatUp 4s ease-in infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .footer {
+            color: white;
+            margin-top: 2rem;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="questionScreen">
+            <div class="hearts">❤️ 💕 ❤️</div>
+            <h1>Czy będziesz moją walentynką?</h1>
+            
+            <div class="image-container" style="margin: 2rem 0;">
+                <!-- Zamień 'twoje_zdjecie.jpg' na ścieżkę do swojego zdjęcia -->
+                <img src="twoje_zdjecie.jpg" alt="Nasze zdjęcie" 
+                     onerror="this.style.display='none'; document.getElementById('imageErrorQuestion').style.display='block';">
+                <div id="imageErrorQuestion" style="display: none; padding: 2rem; color: white;">
+                    <p>💡 Dodaj swoje zdjęcie o nazwie 'twoje_zdjecie.jpg' w tym samym folderze!</p>
+                </div>
+            </div>
+            
+            <div class="buttons-container">
+                <button id="yesBtn" onclick="showSuccess()">💖 TAK 💖</button>
+                <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">😢 Nie</button>
+            </div>
+        </div>
+
+        <div id="successScreen" class="success-screen">
+            <div class="hearts">💝 💖 💝</div>
+            <div class="success-message">🎉 Wiedziałem/am! 🎉</div>
+            
+            <div class="image-container">
+                <!-- Zamień 'twoje_zdjecie.jpg' na ścieżkę do swojego zdjęcia -->
+                <img src="twoje_zdjecie.jpg" alt="Nasze zdjęcie" id="valentineImage" 
+                     onerror="this.style.display='none'; document.getElementById('imageError').style.display='block';">
+                <div id="imageError" style="display: none; padding: 2rem; color: white;">
+                    <p>💡 Dodaj swoje zdjęcie o nazwie 'twoje_zdjecie.jpg' w tym samym folderze!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">Stworzone z ❤️</div>
+    </div>
+
+    <script>
+        function moveButton() {
+            const btn = document.getElementById('noBtn');
+            const container = document.querySelector('.buttons-container');
+            
+            const maxX = container.offsetWidth - btn.offsetWidth - 20;
+            const maxY = container.offsetHeight - btn.offsetHeight - 20;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+        }
+
+        function showSuccess() {
+            document.getElementById('questionScreen').style.display = 'none';
+            document.getElementById('successScreen').style.display = 'block';
+            createFloatingHearts();
+        }
+
+        function createFloatingHearts() {
+            const hearts = ['❤️', '💕', '💖', '💗', '💝'];
+            
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'floating-hearts';
+                    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDelay = Math.random() * 2 + 's';
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 4000);
+                }, i * 200);
+            }
+        }
+
+        // Ustawienie początkowej pozycji przycisku "Nie"
+        window.addEventListener('load', () => {
+            const noBtn = document.getElementById('noBtn');
+            noBtn.style.left = '50px';
+            noBtn.style.top = '0px';
+        });
+    </script>
+</body>
+</html>
