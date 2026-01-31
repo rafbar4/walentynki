@@ -2,8 +2,8 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> 💝</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>💝</title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -15,27 +15,33 @@
         body {
             font-family: 'Quicksand', sans-serif;
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            min-height: 100vh;
+            height: 100vh; /* Sztywna wysokość ekranu */
+            width: 100vw;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow: hidden; /* KLUCZOWE: Blokuje przewijanie strony */
         }
 
         .container {
             text-align: center;
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            padding: 3rem;
-            border-radius: 30px;
+            padding: 2rem;
+            border-radius: 20px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             max-width: 600px;
-            width: 90%;
+            width: 90%; /* Zostawia trochę marginesu po bokach */
+            max-height: 95vh; /* Nie może być wyższy niż ekran */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .hearts {
-            font-size: 4rem;
-            margin-bottom: 1rem;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
             animation: heartbeat 1.5s ease-in-out infinite;
         }
 
@@ -48,47 +54,53 @@
         h1 {
             font-family: 'Pacifico', cursive;
             color: white;
-            font-size: 3rem;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
-            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
             animation: float 3s ease-in-out infinite;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-5px); }
         }
 
         .buttons-container {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
             justify-content: center;
-            margin-top: 2rem;
+            margin-top: 1.5rem;
             position: relative;
-            height: 150px;
+            height: 80px; /* Zmniejszona wysokość kontenera przycisków */
+            width: 100%;
             align-items: center;
         }
 
         button {
             font-family: 'Quicksand', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            padding: 1rem 3rem;
+            padding: 0.8rem 2rem;
             border-radius: 50px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+            /* Ważne dla dotyku na telefonie: */
+            touch-action: manipulation; 
+            -webkit-tap-highlight-color: transparent;
         }
 
         #yesBtn {
             background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
             color: white;
+            z-index: 10; /* Zawsze na wierzchu */
         }
 
-        #yesBtn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        #yesBtn:hover, #yesBtn:active {
+            transform: scale(1.05);
         }
 
         #noBtn {
@@ -100,57 +112,110 @@
 
         .success-screen {
             display: none;
-            animation: fadeIn 1s ease-in;
+            animation: fadeIn 0.5s ease-in;
+            width: 100%;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.8); }
+            from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
         }
 
         .success-message {
             color: white;
-            font-size: 2.5rem;
+            font-size: 1.5rem;
             font-weight: 600;
-            margin: 2rem 0;
+            margin: 1rem 0;
+            white-space: nowrap;
         }
 
         .image-container {
-            margin: 2rem 0;
-            border-radius: 20px;
+            margin: 1rem auto;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            /* KLUCZOWE DLA TELEFONU: Ogranicza wysokość obrazka */
+            max-height: 35vh; 
+            max-width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
         .image-container img {
-            width: 100%;
+            max-width: 100%;
+            max-height: 35vh; /* Obrazek nigdy nie zajmie więcej niż 35% ekranu */
             height: auto;
+            width: auto;
+            object-fit: contain;
             display: block;
         }
 
         .floating-hearts {
             position: fixed;
-            font-size: 2rem;
+            font-size: 1.5rem;
             animation: floatUp 4s ease-in infinite;
             pointer-events: none;
+            z-index: 100;
         }
 
         @keyframes floatUp {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
         }
 
         .footer {
             color: white;
-            margin-top: 2rem;
-            font-size: 1rem;
-            opacity: 0.9;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* --- SPECJALNE style dla TELEFONÓW (ekrany mniejsze niż 600px) --- */
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem 1rem;
+                width: 95%;
+            }
+            
+            h1 {
+                font-size: 1.8rem; /* Mniejszy tytuł */
+                margin-bottom: 1rem;
+            }
+
+            .hearts {
+                font-size: 2.5rem;
+            }
+
+            .buttons-container {
+                gap: 1rem;
+            }
+
+            button {
+                padding: 0.8rem 1.5rem; /* Mniejsze przyciski */
+                font-size: 1rem;
+            }
+
+            /* Na bardzo wąskich telefonach tekst sukcesu też się zmniejszy */
+            .success-message {
+                font-size: 1.1rem; 
+            }
+            
+            /* Zapewnia, że obrazek jest proporcjonalny */
+            .image-container {
+                max-height: 30vh;
+            }
+            .image-container img {
+                max-height: 30vh;
+            }
+        }
+        
+        /* Dla bardzo małych ekranów (np. stary iPhone SE) */
+        @media (max-height: 600px) {
+            h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+            .hearts { font-size: 2rem; margin-bottom: 0; }
+            .image-container { max-height: 25vh; margin: 0.5rem auto; }
+            .image-container img { max-height: 25vh; }
+            .footer { display: none; } /* Ukrywamy stopkę, żeby zaoszczędzić miejsce */
         }
     </style>
 </head>
@@ -160,31 +225,29 @@
             <div class="hearts">❤️ 💕 ❤️</div>
             <h1>Martusia, czy zostaniesz moją walentynką?</h1>
             
-            <div class="image-container" style="margin: 2rem 0;">
-                <!-- Zamień 'twoje_zdjecie.jpg' na ścieżkę do swojego zdjęcia -->
-                <img src="shrek_kot.gif" alt="" 
+            <div class="image-container">
+                <img src="shrek_kot.gif" alt="Kot Shrek" 
                      onerror="this.style.display='none'; document.getElementById('imageErrorQuestion').style.display='block';">
-                <div id="imageErrorQuestion" style="display: none; padding: 2rem; color: white;">
-                    <p>💡 Dodaj swoje zdjęcie o nazwie 'twoje_zdjecie.jpg' w tym samym folderze!</p>
+                <div id="imageErrorQuestion" style="display: none; padding: 1rem; color: white; font-size: 0.8rem;">
+                    <p>💡 Brak zdjęcia 'twoje_zdjecie.jpg'</p>
                 </div>
             </div>
             
             <div class="buttons-container">
                 <button id="yesBtn" onclick="showSuccess()">💖 TAK 💖</button>
-                <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">😢 Nie</button>
+                <button id="noBtn" onclick="moveButton()">😢 Nie</button>
             </div>
         </div>
 
         <div id="successScreen" class="success-screen">
             <div class="hearts">💝 🫶🏽 🌹</div>
-            <div class="success-message">🎉    Widzimy się czternastego!    🎉</div>
+            <div class="success-message">🎉 Widzimy się czternastego! 🎉</div>
             
             <div class="image-container">
-                <!-- Zamień 'twoje_zdjecie.jpg' na ścieżkę do swojego zdjęcia -->
-                <img src="kot_kiss.gif" alt="" id="valentineImage" 
+                <img src="kot_kiss.gif" alt="Kot Kiss" id="valentineImage" 
                      onerror="this.style.display='none'; document.getElementById('imageError').style.display='block';">
-                <div id="imageError" style="display: none; padding: 2rem; color: white;">
-                    <p>💡 Dodaj swoje zdjęcie o nazwie 'twoje_zdjecie.jpg' w tym samym folderze!</p>
+                <div id="imageError" style="display: none; padding: 1rem; color: white; font-size: 0.8rem;">
+                    <p>💡 Brak zdjęcia 'twoje_zdjecie.jpg'</p>
                 </div>
             </div>
         </div>
@@ -196,16 +259,48 @@
         function moveButton() {
             const btn = document.getElementById('noBtn');
             const container = document.querySelector('.buttons-container');
+            const yesBtn = document.getElementById('yesBtn'); // Pobieramy przycisk TAK, żeby na niego nie najechać
             
-            const maxX = container.offsetWidth - btn.offsetWidth - 20;
-            const maxY = container.offsetHeight - btn.offsetHeight - 20;
+            // Obliczamy dostępne miejsce w kontenerze
+            const maxX = container.clientWidth - btn.offsetWidth;
+            const maxY = container.clientHeight - btn.offsetHeight;
             
-            const randomX = Math.random() * maxX;
-            const randomY = Math.random() * maxY;
+            // Losujemy nową pozycję
+            let randomX = Math.random() * maxX;
+            let randomY = Math.random() * maxY;
+
+            // Proste zabezpieczenie, żeby nie wyjechało za bardzo poza kontener na telefonie
+            // Centrujemy zakres losowania względem środka
+            randomX = (Math.random() - 0.5) * (container.clientWidth * 0.8); 
+            randomY = (Math.random() - 0.5) * (container.clientHeight * 0.8);
             
-            btn.style.left = randomX + 'px';
-            btn.style.top = randomY + 'px';
+            // Ustawiamy pozycję względem środka (używając transform jest płynniej)
+            btn.style.position = 'absolute';
+            // Jeśli pozycja jest "static" (domyślna), zmieniamy na absolute, żeby móc ruszać
+            
+            // Na telefonie lepiej użyć transform dla płynności
+            // Ustawiamy losowe współrzędne w obrębie kontenera
+            // Dla uproszczenia w tym kodzie: po prostu przesuwamy go losowo w obrębie boxa
+            
+            // Resetujemy static, jeśli był
+            if(getComputedStyle(btn).position === 'static') {
+                 btn.style.position = 'absolute';
+                 btn.style.right = '0'; // Startowa pozycja "Nie"
+            }
+
+            const rect = container.getBoundingClientRect();
+            // Bardziej chaotyczny ruch dla efektu uciekania
+            const moveX = (Math.random() * 200) - 100;
+            const moveY = (Math.random() * 100) - 50;
+            
+            btn.style.transform = `translate(${moveX}px, ${moveY}px)`;
         }
+
+        // Dodajemy obsługę dotyku dla telefonów (żeby uciekał przy tapnięciu)
+        document.getElementById('noBtn').addEventListener('touchstart', function(e) {
+            e.preventDefault(); // Zapobiega kliknięciu
+            moveButton();
+        });
 
         function showSuccess() {
             document.getElementById('questionScreen').style.display = 'none';
@@ -216,25 +311,24 @@
         function createFloatingHearts() {
             const hearts = ['❤️', '💕', '💖', '💗', '💝'];
             
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 30; i++) { // Więcej serc!
                 setTimeout(() => {
                     const heart = document.createElement('div');
                     heart.className = 'floating-hearts';
                     heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
                     heart.style.left = Math.random() * 100 + 'vw';
-                    heart.style.animationDelay = Math.random() * 2 + 's';
+                    heart.style.fontSize = (Math.random() * 2 + 1) + 'rem'; // Losowy rozmiar
+                    heart.style.animationDuration = (Math.random() * 2 + 3) + 's'; // Losowa prędkość
                     document.body.appendChild(heart);
                     
-                    setTimeout(() => heart.remove(), 4000);
-                }, i * 200);
+                    setTimeout(() => heart.remove(), 5000);
+                }, i * 150);
             }
         }
 
         // Ustawienie początkowej pozycji przycisku "Nie"
         window.addEventListener('load', () => {
-            const noBtn = document.getElementById('noBtn');
-            noBtn.style.left = '50px';
-            noBtn.style.top = '0px';
+            // Na starcie nic nie musimy robić, flexbox ustawi je obok siebie
         });
     </script>
 </body>
